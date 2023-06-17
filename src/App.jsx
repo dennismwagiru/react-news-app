@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import './App.scss'
 import Logo from "./components/Logo.jsx";
 import {
@@ -15,7 +15,6 @@ import {
 } from "react-router-dom";
 
 function App() {
-
     const queryClient = new QueryClient()
 
     return (

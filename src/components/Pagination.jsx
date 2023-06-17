@@ -1,46 +1,57 @@
 import React from 'react';
-import {useSearchParams} from "react-router-dom";
+import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 
-const Pagination = ({pagination}) => {
-    let [searchParams, setSearchParams] = useSearchParams();
+const Pagination = ({current_page, total_pages}) => {
+    const [pages, setPages] = React.useState([]);
+
+    React.useEffect(() => {
+        window.scroll(0, 0);
+        if (current_page && total_pages) {
+            let list = [];
+            let start = current_page - 2 <= 0 ? 1 : current_page - 2;
+            let diff = total_pages - current_page;
+            let end = diff >= 3 ? current_page + 3 : current_page + diff;
+            for (let i = start; i <= end; i++) {
+                list.push(i)
+            }
+            setPages(list);
+        }
+    }, [current_page, total_pages]);
+
     return (
         <>
             <nav aria-label="...">
                 <ul className="pagination justify-content-center">
-                    <li className="page-item disabled">
-                        <span className="page-link">Previous</span>
+                    <li className={`page-item ${current_page <= 1 ? 'disabled' : ''}`}>
+                        <Link className="page-link" to={`?page=${+current_page - 1}`}>Previous</Link>
                     </li>
-                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                    <li className="page-item active" aria-current="page">
-                        <span className="page-link">{pagination?.current_page}</span>
-                    </li>
-                    <li className="page-item">
-                        <a className="page-link" href="#" onClick={() => setSearchParams({'page': 2})}>2</a>
-                    </li>
-                    <li className="page-item">
-                        <a className="page-link" href="#">Next</a>
+
+                    {
+                        pages.map( (page) => {
+                            return (
+                                <li className={`page-item ${page === current_page ? 'active' : ''}`} key={page}>
+                                    <Link className="page-link" to={`?page=${page}`} >{page}</Link>
+                                </li>
+                            )
+                        })
+                    }
+
+                    <li className={`page-item ${current_page >= total_pages ? 'disabled' : ''}`}>
+                        <Link className="page-link" to={`?page=${+current_page + 1}`}>Next</Link>
                     </li>
                 </ul>
             </nav>
-            {/*<button*/}
-            {/*    onClick={() => setPage(old => Math.max(old - 1, 1))}*/}
-            {/*    disabled={page === 1}*/}
-            {/*>*/}
-            {/*    Previous Page*/}
-            {/*</button>{' '}*/}
-            {/*<button*/}
-            {/*    onClick={() => {*/}
-            {/*        if (!isPreviousData && data.meta?.pagination?.total_pages > page) {*/}
-            {/*            setPage(old => old + 1)*/}
-            {/*        }*/}
-            {/*    }}*/}
-            {/*    // Disable the Next Page button until we know a next page is available*/}
-            {/*    disabled={isPreviousData || data?.meta?.pagination?.total_pages <= page}*/}
-            {/*>*/}
-            {/*    Next Page*/}
-            {/*</button>*/}
         </>
     )
 }
+
+Pagination.propTypes = {
+    total: PropTypes.number,
+    count: PropTypes.number,
+    per_page: PropTypes.number,
+    current_page: PropTypes.number,
+    total_pages: PropTypes.number,
+};
 
 export default Pagination

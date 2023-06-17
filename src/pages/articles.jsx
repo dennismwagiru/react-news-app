@@ -4,8 +4,8 @@ import {useSearchParams} from "react-router-dom";
 import Pagination from "../components/Pagination.jsx";
 
 function App() {
-    let [searchParams, setSearchParams] = useSearchParams();
-    const [page, setPage] = useState(1)
+    let [searchParams] = useSearchParams();
+    const page = searchParams.get('page')
 
     const fetchProjects = (page = 0) => fetch('http://127.0.0.1/api/articles?page=' + page).then((res) => res.json())
 
@@ -16,7 +16,7 @@ function App() {
         data,
         isFetching,
         isPreviousData,
-    } = useQuery(['projects', page], () => fetchProjects(page), { keepPreviousData : true });
+    } = useQuery(['articles', page], () => fetchProjects(page), { keepPreviousData : true });
 
     console.log({data});
 
@@ -35,8 +35,7 @@ function App() {
                         ))}
                     </div>
                 )}
-                <Pagination pagination={data?.meta?.pagination} />
-                {isFetching ? <span> Loading...</span> : null}{' '}
+                <Pagination {...data?.meta?.pagination} />
             </div>
         </>
     )
