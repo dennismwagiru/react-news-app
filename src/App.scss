@@ -2,9 +2,9 @@
 
 #root {
   width: 100%
-//  margin: 0 auto;
-//  padding: 2rem;
-//  //text-align: center;
+  //  margin: 0 auto;
+  //  padding: 2rem;
+  //  //text-align: center;
 }
 
 .logo {
@@ -64,4 +64,9 @@
 
 li, .dropdown {
   list-style: none;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
 }
