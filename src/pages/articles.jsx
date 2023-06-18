@@ -3,7 +3,7 @@ import {useSearchParams} from "react-router-dom";
 import Pagination from "../components/Pagination.jsx";
 import Loading from "../components/Loading.jsx";
 import Message from "../components/Message.jsx";
-import Article from "../components/Article.jsx";
+import Article from "../components/containers/Article.jsx";
 
 function App() {
     let [searchParams] = useSearchParams();
