@@ -2,9 +2,7 @@ import {useSearchParams} from "react-router-dom";
 import {useQuery} from "react-query";
 import Loading from "../components/Loading.jsx";
 import Message from "../components/Message.jsx";
-import Article from "../components/containers/Article.jsx";
 import Pagination from "../components/Pagination.jsx";
-import {Card} from "react-bootstrap";
 import Author from "../components/containers/Author.jsx";
 
 const Authors = () => {
