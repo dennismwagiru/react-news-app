@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 
 const Pagination = ({current_page, total_pages}) => {
+    let [searchParams, setSearchParams] = useSearchParams();
+
     const [pages, setPages] = React.useState([]);
 
     React.useEffect(() => {

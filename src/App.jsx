@@ -21,6 +21,8 @@ const Register = lazy(() => import('./pages/auth/register.jsx'));
 const ForgotPassword = lazy(() => import('./pages/auth/forgot-password.jsx'));
 const ResetPassword = lazy(() => import('./pages/auth/set-password.jsx'));
 
+const ComingSoon = lazy(() => import('./pages/coming-soon.jsx'));
+
 function App() {
     const queryClient = new QueryClient()
     const [searchParams] = useSearchParams();
@@ -34,8 +36,11 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Articles />}/>
                     <Route path="/authors" element={<Authors />}/>
+                    <Route path="/authors/:id/articles" element={<ComingSoon />}/>
                     <Route path="/categories" element={<Categories />}/>
+                    <Route path="/categories/:id/articles" element={<ComingSoon />}/>
                     <Route path="/sources" element={<Sources />}/>
+                    <Route path="/sources/:id/articles" element={<ComingSoon />}/>
                     <Route path="/profile" element={<Profile />}/>
                     {/*Auth*/}
                     <Route path="/auth/register" element={<Register />}/>

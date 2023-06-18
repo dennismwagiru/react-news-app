@@ -6,10 +6,13 @@ import Message from "../components/Message.jsx";
 import Article from "../components/containers/Article.jsx";
 
 function App() {
-    let [searchParams] = useSearchParams();
-    const page = searchParams.get('page')
+    let [searchParams, setSearchParams] = useSearchParams();
+    const page = searchParams.get('page');
 
-    const fetchArticles = (page = 0) => fetch('http://127.0.0.1/api/articles?page=' + page).then((res) => res.json())
+    console.log(searchParams.toString())
+
+    const fetchArticles = () =>
+        fetch('http://127.0.0.1/api/articles?' + searchParams.toString()).then((res) => res.json())
 
     const {
         isLoading,
@@ -18,7 +21,7 @@ function App() {
         data,
         isFetching,
         isPreviousData,
-    } = useQuery(['articles', page], () => fetchArticles(page), { keepPreviousData : true });
+    } = useQuery(['articles', page], () => fetchArticles(), { keepPreviousData : true });
 
 
     return (
