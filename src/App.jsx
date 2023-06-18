@@ -1,36 +1,37 @@
-import {useEffect, useState} from 'react'
+import {lazy, Suspense} from "react";
 import './App.scss'
-import Logo from "./components/Logo.jsx";
 import {
-    useQuery,
-    useMutation,
-    useQueryClient,
     QueryClient,
     QueryClientProvider,
 } from 'react-query'
-import Articles from "./pages/articles.jsx";
 import {
     Route,
     Routes,
 } from "react-router-dom";
+import Loading from "./components/Loading.jsx";
+import Navbar from "./components/Navbar.jsx";
+
+const Articles = lazy(() => import('./pages/articles.jsx'));
+const Authors = lazy(() => import('./pages/authors.jsx'));
+const Categories = lazy(() => import('./pages/categories.jsx'));
+const Sources = lazy(() => import('./pages/sources.jsx'));
 
 function App() {
     const queryClient = new QueryClient()
 
     return (
-        <>
-            <Logo />
-            <Routes>
-                <Route path="/"
-                       element={
-                           <QueryClientProvider client={queryClient}>
-                               <Articles />
-                           </QueryClientProvider>
-                       }
-                />
-            </Routes>
+        <QueryClientProvider client={queryClient}>
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+                <Routes>
+                    <Route path="/" element={<Articles />}/>
+                    <Route path="/authors" element={<Authors />}/>
+                    <Route path="/categories" element={<Categories />}/>
+                    <Route path="/sources" element={<Sources />}/>
+                </Routes>
 
-        </>
+            </Suspense>
+        </QueryClientProvider>
     )
 }
 

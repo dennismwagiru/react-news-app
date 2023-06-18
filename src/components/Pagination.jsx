@@ -22,7 +22,7 @@ const Pagination = ({current_page, total_pages}) => {
     return (
         <>
             <nav aria-label="...">
-                <ul className="pagination justify-content-center">
+                <ul className="pagination justify-content-start">
                     <li className={`page-item ${current_page <= 1 ? 'disabled' : ''}`}>
                         <Link className="page-link" to={`?page=${+current_page - 1}`}>Previous</Link>
                     </li>
