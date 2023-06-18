@@ -9,7 +9,7 @@ const Authors = () => {
     let [searchParams] = useSearchParams();
     const page = searchParams.get('page')
 
-    const fetchAuthors = (page = 0) => fetch('http://127.0.0.1/api/authors?includes[]=source&page=' + page).then((res) => res.json())
+    const fetchAuthors = (page = 0) => fetch('http://127.0.0.1:8000/api/authors?includes[]=source&page=' + page).then((res) => res.json())
 
     const {
         isLoading,

@@ -35,7 +35,7 @@ const ForgotPassword = () => {
                             {
                                 processing ? <Loading /> : (
                                     <button className="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">
-                                        Log in
+                                        Submit
                                     </button>
                                 )
                             }

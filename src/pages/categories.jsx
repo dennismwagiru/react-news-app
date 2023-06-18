@@ -9,7 +9,7 @@ const Categories = () => {
     let [searchParams] = useSearchParams();
     const page = searchParams.get('page')
 
-    const fetchCategories = (page = 1) => fetch('http://127.0.0.1/api/categories?includes[]=sources&page=' + page).then((res) => res.json())
+    const fetchCategories = (page = 1) => fetch('http://127.0.0.1:8000/api/categories?includes[]=sources&page=' + page).then((res) => res.json())
 
     const {
         isLoading,

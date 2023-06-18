@@ -12,7 +12,7 @@ function App() {
     console.log(searchParams.toString())
 
     const fetchArticles = () =>
-        fetch('http://127.0.0.1/api/articles?' + searchParams.toString()).then((res) => res.json())
+        fetch('http://127.0.0.1:8000/api/articles?' + searchParams.toString()).then((res) => res.json())
 
     const {
         isLoading,

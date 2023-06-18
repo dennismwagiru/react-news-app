@@ -1,5 +1,6 @@
 import { Dropdown } from 'react-bootstrap';
 import {Link} from "react-router-dom";
+import Avatar from '../assets/avatar.jpg';
 
 const Profile = () => {
     return (
@@ -12,7 +13,7 @@ const Profile = () => {
                 className="pe-0 nav-link"
             >
                 <div className="avatar">
-                    <img className="rounded-circle" src="https://prium.github.io/falcon/v3.5.0/assets/img/team/3-thumb.png" alt="" />
+                    <img className="rounded-circle" src={Avatar} alt="" />
                 </div>
             </Dropdown.Toggle>
 
