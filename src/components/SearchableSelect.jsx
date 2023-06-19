@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 let timeout = null;
 
-const SearchableSelect = ({ onChange, fetchOptions, ...rest}) => {
+const SearchableSelect = ({ onChange, fetchOptions, map, ...rest}) => {
 
     const promiseOptions = (inputValue, callback) => {
         clearTimeout(timeout);
@@ -14,9 +14,7 @@ const SearchableSelect = ({ onChange, fetchOptions, ...rest}) => {
 
     const searchOptions = (inputValue, callback) => {
         return fetchOptions(inputValue)
-            .then(res => callback(res.map((el)=> ({
-                label: el?.original_url.replace(/^.+\\/,''), value: el?.id
-            }))));
+            .then(res => callback(res?.data?.map(map)));
     };
 
     return (
@@ -33,6 +31,7 @@ const SearchableSelect = ({ onChange, fetchOptions, ...rest}) => {
 }
 
 SearchableSelect.propTypes = {
+    map: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     fetchOptions: PropTypes.func.isRequired
 }

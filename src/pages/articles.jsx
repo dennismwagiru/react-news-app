@@ -7,15 +7,27 @@ import Article from "../components/containers/Article.jsx";
 import {Col, Row} from "react-bootstrap";
 import SearchableSelect from "../components/SearchableSelect.jsx";
 import handler from "../../utils/api.js";
-import {useState} from "react";
-import axios from "axios";
+import {useEffect, useState} from "react";
+
+let timeout = null;
 
 function App() {
     const [filters, setFilters] = useState({});
     let [searchParams, setSearchParams] = useSearchParams();
     const page = searchParams.get('page');
+    const sources = searchParams.get('sources')?.split(",")
+    const categories = searchParams.get('categories')?.split(",")
+    const authors = searchParams.get('authors')?.split(",");
+    const query = searchParams.get('query');
 
-    const fetchArticles = () => handler.get('articles', { ...filters, page}).then(res => res);
+    useEffect(() => {
+        setSearchParams({ page: 1, ...filters})
+    }, [filters])
+
+    const fetchArticles = () =>
+        handler.get('articles', {
+            page, query, source_ids: sources, author_ids: authors, category_ids: categories
+        }).then(res => res);
 
     const {
         isLoading,
@@ -24,9 +36,11 @@ function App() {
         data,
         isFetching,
         isPreviousData,
-    } = useQuery(['articles', page], () => fetchArticles(), { keepPreviousData : true });
-
-    // TODO: Implement Search and Filter
+    } = useQuery({
+        queryKey: ['articles', page, sources, authors, categories, query],
+        queryFn: async () => fetchArticles({ ...filters, page, query}),
+        keepPreviousData : true
+    });
 
     return (
         <div className='container'>
@@ -39,35 +53,45 @@ function App() {
                 <>
                     <Row>
                         <Col md={12} className='mb-2'>
-                            <input className='form-control' placeholder='Search Stories'/>
+                            <input className='form-control' placeholder='Search Stories'
+                                   onKeyUp={({target}) => {
+                                       clearTimeout(timeout);
+                                       timeout = setTimeout(() => {
+                                           setFilters({ ...filters, query: target.value});
+                                       }, 1000)
+                                   }}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col md={3} className='mb-2'>
+                            <label>Source</label>
                             <SearchableSelect
-                                onChange={selected => setFilters({ ...filters, source_ids: selected?.map(el => el?.value)})}
+                                isMulti
+                                onChange={selected => setFilters({ ...filters, sources: selected?.map(el => el?.value).join(",")})}
                                 map={el => ({label: el?.name, value: el?.id})}
                                 fetchOptions={(query) => handler.get("sources?query=" + query)}
+                                placeHolder='Sorces'
                             />
                         </Col>
                         <Col md={3} className='mb-2'>
+                            <label>Author</label>
                             <SearchableSelect
-                                onChange={selected => setFilters({ ...filters, author_ids: selected?.map(el => el?.value)})}
+                                isMulti
+                                onChange={selected => setFilters({ ...filters, authors: selected?.map(el => el?.value).join(",")})}
                                 map={el => ({label: el?.name, value: el?.id})}
                                 fetchOptions={(query) => handler.get("authors?query=" + query)}
                             />
                         </Col>
                         <Col md={3} className='mb-2'>
+                            <label>Category</label>
                             <SearchableSelect
-                                onChange={selected => setFilters({ ...filters, category_ids: selected?.map(el => el?.value)})}
+                                isMulti
+                                onChange={selected => setFilters({ ...filters, categories: selected?.map(el => el?.value).join(",")})}
                                 map={el => ({label: el?.name, value: el?.id})}
                                 fetchOptions={(query) => handler.get("categories?query=" + query)}
                             />
                         </Col>
 
-                        <Col md={3} className='text-end'>
-                            <button className='btn btn-success'>Filter</button>
-                        </Col>
                     </Row>
                     <div className='row'>
                         {data?.data?.map(article => (
