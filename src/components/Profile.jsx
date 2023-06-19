@@ -22,7 +22,7 @@ const Profile = () => {
                     <Dropdown.Item as={Link} to="/profile">
                         Profile &amp; account
                     </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/auth/logout">
+                    <Dropdown.Item as={Link} to="/auth/login">
                         Logout
                     </Dropdown.Item>
                 </div>
